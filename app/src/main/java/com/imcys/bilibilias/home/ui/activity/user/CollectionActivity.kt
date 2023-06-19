@@ -7,13 +7,10 @@ import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.baidu.mobstat.StatService
 import com.google.android.material.tabs.TabLayout
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
 import com.imcys.bilibilias.common.base.api.BilibiliApi
-import com.imcys.bilibilias.base.app.App
-import com.imcys.bilibilias.common.base.app.BaseApplication
 import com.imcys.bilibilias.databinding.ActivityCollectionBinding
 import com.imcys.bilibilias.home.ui.adapter.CollectionDataAdapter
 import com.imcys.bilibilias.home.ui.model.CollectionDataBean
@@ -145,18 +142,6 @@ class CollectionActivity : BaseActivity() {
                 collectionDataAd.submitList(collectionDataMutableList + mutableListOf())
             }
 
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
     }
 
     companion object {

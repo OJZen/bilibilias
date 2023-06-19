@@ -6,7 +6,6 @@ import android.net.Uri
 import android.os.Build
 import android.provider.MediaStore
 import androidx.loader.content.CursorLoader
-import com.microsoft.appcenter.utils.storage.FileManager.deleteDirectory
 import java.io.*
 import java.nio.file.Files
 import java.nio.file.Paths
@@ -45,7 +44,7 @@ object FileUtils {
         return if (!file.exists()) {
             false
         } else {
-            if (file.isFile) mDeleteFile(delFile) else deleteDirectory(File(delFile))
+            mDeleteFile(delFile)
         }
     }
 

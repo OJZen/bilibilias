@@ -4,8 +4,6 @@ import android.annotation.SuppressLint
 import android.app.Application
 import android.content.Context
 import android.os.Handler
-import androidx.preference.PreferenceManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.common.BuildConfig
 import com.imcys.bilibilias.common.base.model.user.MyUserData
 import com.imcys.bilibilias.common.data.AppDatabase
@@ -13,7 +11,6 @@ import com.tencent.mmkv.MMKV
 import com.xiaojinzi.component.Component
 import com.xiaojinzi.component.Config
 import com.xiaojinzi.component.impl.application.ModuleManager
-import dagger.hilt.android.HiltAndroidApp
 
 open class BaseApplication : Application() {
 
@@ -24,8 +21,6 @@ open class BaseApplication : Application() {
 
         handler = Handler(mainLooper)
 
-        //百度统计开始
-        startBaiDuService()
         appDatabase = AppDatabase.getDatabase(this)
 
         initKComponent()
@@ -52,22 +47,6 @@ open class BaseApplication : Application() {
         ModuleManager.registerArr(
             "app", "common", "tool_livestream", "tool_log_export"
         )
-    }
-
-
-    /**
-     * 百度统计
-     */
-    private fun startBaiDuService() {
-
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (sharedPreferences.getBoolean("baidu_statistics_type", false)) {
-            StatService.setAuthorizedState(applicationContext, true)
-        } else {
-            StatService.setAuthorizedState(applicationContext, false)
-        }
-        StatService.autoTrace(applicationContext)
-
     }
 
 

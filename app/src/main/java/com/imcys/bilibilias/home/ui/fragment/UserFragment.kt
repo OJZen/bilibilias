@@ -11,7 +11,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.utils.TokenUtils
 import com.imcys.bilibilias.base.utils.asToast
@@ -40,13 +39,6 @@ class UserFragment : Fragment() {
 
     //
     lateinit var fragmentUserBinding: FragmentUserBinding
-
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onPageStart(context, "UserFragment")
-
-    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -286,13 +278,6 @@ class UserFragment : Fragment() {
     private fun isSlideToBottom(recyclerView: RecyclerView?): Boolean {
         if (recyclerView == null) return false
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-        StatService.onPageEnd(context, "UserFragment")
-
     }
 
     //回收数据留存

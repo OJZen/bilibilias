@@ -6,17 +6,14 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.StaggeredGridLayoutManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
 import com.imcys.bilibilias.common.base.api.BilibiliApi
-import com.imcys.bilibilias.base.app.App
-import com.imcys.bilibilias.common.base.app.BaseApplication
+import com.imcys.bilibilias.common.base.utils.RecyclerViewUtils
+import com.imcys.bilibilias.common.base.utils.http.HttpUtils
 import com.imcys.bilibilias.databinding.ActivityPlayHistoryBinding
 import com.imcys.bilibilias.home.ui.adapter.PlayHistoryAdapter
 import com.imcys.bilibilias.home.ui.model.PlayHistoryBean
-import com.imcys.bilibilias.common.base.utils.http.HttpUtils
-import com.imcys.bilibilias.common.base.utils.RecyclerViewUtils
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 import javax.inject.Inject
 
@@ -87,18 +84,6 @@ class PlayHistoryActivity : BaseActivity() {
                 playHistoryDataMutableList.addAll(it.data.list)
                 playHistoryAdapter.submitList(playHistoryDataMutableList + mutableListOf())
             }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
     }
 
     companion object {

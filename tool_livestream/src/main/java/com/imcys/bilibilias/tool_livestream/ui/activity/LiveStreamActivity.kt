@@ -7,9 +7,7 @@ import androidx.lifecycle.lifecycleScope
 import cn.jzvd.JZDataSource
 import cn.jzvd.Jzvd
 import cn.jzvd.JzvdStd
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.common.base.api.BilibiliApi
-import com.imcys.bilibilias.common.base.app.BaseApplication
 import com.imcys.bilibilias.common.base.arouter.ARouterAddress
 import com.imcys.bilibilias.common.base.utils.http.HttpUtils
 import com.imcys.bilibilias.common.base.view.AsJzvdStd
@@ -201,13 +199,6 @@ class LiveStreamActivity : BaseActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        //百度统计
-        StatService.onResume(this)
-    }
-
-
     override fun onDestroy() {
         super.onDestroy()
         JzvdStd.releaseAllVideos()
@@ -227,8 +218,6 @@ class LiveStreamActivity : BaseActivity() {
         if (asJzvdStd.state == Jzvd.STATE_PLAYING) { //暂停视频
             asJzvdStd.startButton.performClick()
         }
-        //百度统计
-        StatService.onPause(this)
     }
 
 

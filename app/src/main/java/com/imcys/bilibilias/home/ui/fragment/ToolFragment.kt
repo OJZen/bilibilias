@@ -8,14 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.EditorInfo
 import android.widget.Toast
-import androidx.core.app.ActivityOptionsCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.baidu.mobstat.StatService
 import com.hyy.highlightpro.HighlightPro
 import com.hyy.highlightpro.parameter.Constraints
 import com.hyy.highlightpro.parameter.HighlightParameter
@@ -80,7 +78,6 @@ class ToolFragment : Fragment() {
                 .putString("AppGuideVersion", App.AppGuideVersion).apply()
             loadToolGuide()
         }
-        StatService.onPageStart(context, "ToolFragment")
     }
 
     private fun loadToolGuide() {
@@ -358,65 +355,6 @@ class ToolFragment : Fragment() {
     private fun loadToolItem() {
         val toolItemMutableList = mutableListOf<ToolItemBean>()
         lifecycleScope.launch {
-            //通过远程数据获取item
-            val oldToolItemBean = getOldToolItemBean()
-            oldToolItemBean.data.forEach {
-                when (it.tool_code) {
-                    //视频解析
-                    1 -> {
-                        toolItemMutableList.add(ToolItemBean(
-                            it.title,
-                            it.img_url,
-                            it.color
-                        ) {
-                            asVideoId(fragmentToolBinding.fragmentToolEditText.text.toString())
-                        })
-                    }
-                    //设置
-                    2 -> {
-                        toolItemMutableList.add(ToolItemBean(
-                            it.title,
-                            it.img_url,
-                            it.color
-                        ) {
-                            val intent = Intent(context, SettingActivity::class.java)
-                            requireActivity().startActivity(intent)
-                        })
-                    }
-                    //web解析
-                    3 -> {
-                        toolItemMutableList.add(ToolItemBean(
-                            it.title,
-                            it.img_url,
-                            it.color
-                        ) {
-                            val intent = Intent(context, WebAsActivity::class.java)
-                            requireActivity().startActivity(intent)
-                        })
-                    }
-                    //导出日志
-                    4 -> {
-                        toolItemMutableList.add(ToolItemBean(
-                            it.title,
-                            it.img_url,
-                            it.color
-                        ) {
-                            LogExportActivity.actionStart(requireContext())
-                        })
-                    }
-                    //独立合并
-                    5 -> {
-                        toolItemMutableList.add(ToolItemBean(
-                            it.title,
-                            it.img_url,
-                            it.color
-                        ) {
-                            MergeVideoActivity.actionStart(requireContext())
-                        })
-                    }
-                }
-            }
-
             //展示item
             fragmentToolBinding.apply {
                 fragmentToolRecyclerView.adapter = ToolItemAdapter()
@@ -443,27 +381,9 @@ class ToolFragment : Fragment() {
 
         }
 
-
     }
-
-
-    private suspend fun getOldToolItemBean(): OldToolItemBean {
-        return withContext(lifecycleScope.coroutineContext) {
-            HttpUtils.asyncGet(
-                "${BiliBiliAsApi.appFunction}?type=oldToolItem",
-                OldToolItemBean::class.java
-            )
-        }
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        StatService.onPageEnd(context, getString(R.string.app_ToolFragment_onDestroy))
-    }
-
 
     companion object {
-
         @JvmStatic
         fun newInstance() = ToolFragment()
     }

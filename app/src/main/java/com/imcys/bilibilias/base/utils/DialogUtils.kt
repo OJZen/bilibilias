@@ -14,7 +14,6 @@ import androidx.core.content.edit
 import androidx.lifecycle.ViewModelProvider
 import androidx.preference.PreferenceManager
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.baidu.mobstat.StatService
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.model.GlideUrl
@@ -45,7 +44,6 @@ import com.imcys.bilibilias.home.ui.adapter.*
 import com.imcys.bilibilias.home.ui.model.*
 import com.imcys.bilibilias.home.ui.model.view.AsLoginBsViewModel
 import com.imcys.bilibilias.home.ui.model.view.factory.AsLoginBsViewModelFactory
-import com.microsoft.appcenter.analytics.Analytics
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import okhttp3.Call
@@ -533,7 +531,6 @@ object DialogUtils {
         properties["downloadType"] = mDownloadType
         properties["downloadCondition"] = downloadCondition.toString()
         properties["toneQuality"] = toneQuality.toString()
-        Analytics.trackEvent("AnalysisVideo", properties)
         //构建百度事件提交
 
         properties = mutableMapOf()
@@ -541,14 +538,6 @@ object DialogUtils {
         properties["copyright"] = copyright.toString()
         properties["downloadTool"] = mDownloadTool
         properties["downloadType"] = mDownloadType
-        StatService.onEvent(
-            App.context,
-            "AnalysisVideo",
-            "解析视频",
-            1,
-            properties
-        )
-
 
     }
 

@@ -271,10 +271,6 @@
     <string name="app_root_preferences_title_language">语言(Language)</string>
     <string name="user_language_title">设置BILIBILIAS显示的语言</string>
     <string name="app_root_preferences_title_privacy_policy">隐私政策</string>
-    <string name="microsoft_app_center_type_summary">这将匿名传递APP使用的统计数据，如：缓存使用什么方式，FLV还是DASH，帮助我们优化APP。</string>
-    <string name="microsoft_app_center_type_title">允许使用 Microsoft AppCenter</string>
-    <string name="baidu_statistics_type_summary">以匿名的方式上传您的使用时长，页面停留时间，和地区信息，这将帮我们统计优化APP。</string>
-    <string name="baidu_statistics_type_title">允许使用 百度统计</string>
     <string name="app_item_fg_user_tool_favorites">收藏</string>
     <string name="app_item_fg_user_tool_follow_series">追番</string>
     <string name="app_item_fg_user_tool_play_history">观看</string>

@@ -15,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cn.jzvd.JZDataSource
 import cn.jzvd.Jzvd
 import cn.jzvd.JzvdStd
-import com.baidu.mobstat.StatService
 import com.imcys.asbottomdialog.bottomdialog.AsDialog
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
@@ -583,10 +582,6 @@ class AsVideoActivity : BaseActivity() {
             asJzvdStd.startButton.performClick()
             changeFaButtonToPlay()
         }
-        //百度统计
-        StatService.onPause(this)
-
-
     }
 
 
@@ -794,8 +789,6 @@ class AsVideoActivity : BaseActivity() {
             //asDanmaku.show()
             // asJzvdStd.startButton.performClick()
         }
-        //百度统计
-        StatService.onResume(this)
     }
 
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
 import com.imcys.bilibilias.common.base.api.BilibiliApi
@@ -86,16 +85,6 @@ class BangumiFollowActivity : BaseActivity() {
                 bangumiFollowAdapter.submitList(bangumiFollowMutableList + mutableListOf())
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
     }
 
     companion object {

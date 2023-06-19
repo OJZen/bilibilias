@@ -1,7 +1,6 @@
 package com.imcys.bilibilias.common.base
 
 import android.app.Activity
-import android.content.Context
 import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Bundle
@@ -14,10 +13,6 @@ import com.imcys.bilibilias.common.R
 import com.imcys.bilibilias.common.base.app.BaseApplication
 import com.imcys.bilibilias.common.base.model.user.AsUser
 import com.imcys.bilibilias.common.broadcast.ThemeChangedBroadcast
-import com.microsoft.appcenter.AppCenter
-import com.microsoft.appcenter.analytics.Analytics
-import com.microsoft.appcenter.crashes.Crashes
-import com.tencent.mmkv.MMKV
 import com.zackratos.ultimatebarx.ultimatebarx.java.UltimateBarX
 
 
@@ -52,8 +47,6 @@ open class AbsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         // 打印活动名称
         asLogD(this, javaClass.simpleName)
-        //启动APP统计
-        startAppCenter()
         // 添加当前活动
         addActivity(this)
         //判断主题
@@ -65,7 +58,6 @@ open class AbsActivity : AppCompatActivity() {
 
     }
 
-
     override fun onDestroy() {
         super.onDestroy()
         //取消注册（防止泄露）
@@ -73,27 +65,6 @@ open class AbsActivity : AppCompatActivity() {
         // 移除当前活动
         removeActivity(this)
     }
-
-    /**
-     * 启动统计
-     */
-    private fun startAppCenter() {
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this)
-        if (sharedPreferences.getBoolean("microsoft_app_center_type", false)) {
-            if (!AppCenter.isConfigured()) {
-                //统计接入
-                AppCenter.start(
-                    application,
-                    BaseApplication.appSecret,
-                    Analytics::class.java,
-                    Crashes::class.java
-                )
-            }
-
-        }
-
-    }
-
 
     override fun onResume() {
         super.onResume()

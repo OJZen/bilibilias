@@ -3,15 +3,12 @@ package com.imcys.bilibilias.base.utils
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
-import android.content.SharedPreferences
 import android.net.Uri
 import android.os.Build
 import androidx.documentfile.provider.DocumentFile
 import androidx.preference.PreferenceManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.base.app.App
 import com.imcys.bilibilias.base.model.user.DownloadTaskDataBean
-import com.imcys.bilibilias.common.base.AbsActivity
 import com.imcys.bilibilias.common.base.api.BiliBiliAsApi
 import com.imcys.bilibilias.common.base.api.BilibiliApi
 import com.imcys.bilibilias.common.base.app.BaseApplication
@@ -24,12 +21,10 @@ import com.imcys.bilibilias.common.base.utils.http.HttpUtils
 import com.imcys.bilibilias.common.base.utils.http.KtHttpUtils
 import com.imcys.bilibilias.common.data.entity.DownloadFinishTaskInfo
 import com.imcys.bilibilias.common.data.repository.DownloadFinishTaskRepository
-import com.imcys.bilibilias.home.ui.activity.HomeActivity
 import com.imcys.bilibilias.home.ui.adapter.DownloadFinishTaskAd
 import com.imcys.bilibilias.home.ui.adapter.DownloadTaskAdapter
 import com.imcys.bilibilias.home.ui.model.BangumiSeasonBean
 import com.imcys.bilibilias.home.ui.model.VideoBaseBean
-import com.microsoft.appcenter.analytics.Analytics
 import io.microshow.rxffmpeg.RxFFmpegInvoke
 import io.microshow.rxffmpeg.RxFFmpegSubscriber
 import kotlinx.coroutines.*
@@ -387,35 +382,17 @@ class DownloadQueue : CoroutineScope by MainScope() {
         copyright: Int,
         tName: String?,
     ) {
-
-        //通知缓存成功
-        Analytics.trackEvent("缓存成功")
-        StatService.onEvent(App.context, "CacheSuccessful", "缓存成功")
-
         launch(Dispatchers.IO) {
-
-            val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(App.context)
-            val microsoftAppCenterType =
-                sharedPreferences.getBoolean("microsoft_app_center_type", true)
-            val baiduStatisticsType =
-                sharedPreferences.getBoolean("baidu_statistics_type", true)
-
             val cookie =  BaseApplication.dataKv.decodeString("cookies")
 
-            val myUserData = KtHttpUtils.addHeader("cookie", cookie!!)
+            KtHttpUtils.addHeader("cookie", cookie!!)
                 .asyncGet<MyUserData>(BilibiliApi.getMyUserData)
 
-            val url = if (!microsoftAppCenterType && !baiduStatisticsType) {
-                "${BiliBiliAsApi.appAddAsVideoData}?Aid=$aid&Bvid=$bvid&Mid=$mid&Upname=$name&Tname=$tName&Copyright=$copyright"
-            } else {
-                "${BiliBiliAsApi.appAddAsVideoData}?Aid=$aid&Bvid=$bvid&Mid=$mid&Upname=$name&Tname=$tName&Copyright=$copyright&UserName=${myUserData.data.uname}&UserUID=${myUserData.data.mid}"
-            }
+            val url = "${BiliBiliAsApi.appAddAsVideoData}?Aid=$aid&Bvid=$bvid&Mid=$mid&Upname=$name&Tname=$tName&Copyright=$copyright"
+
             //提交数据
             HttpUtils.asyncGet(url).await()
-
         }
-
-
     }
 
     /**
@@ -423,7 +400,6 @@ class DownloadQueue : CoroutineScope by MainScope() {
      * @param cid Int
      */
     private fun videoMerge(cid: Int) {
-
 
         val mergeState =
             PreferenceManager.getDefaultSharedPreferences(App.context).getBoolean(
@@ -435,7 +411,6 @@ class DownloadQueue : CoroutineScope by MainScope() {
                 "user_dl_finish_automatic_import_switch",
                 false
             )
-
 
         val taskMutableList = groupTasksMap[cid]
         val videoTask =

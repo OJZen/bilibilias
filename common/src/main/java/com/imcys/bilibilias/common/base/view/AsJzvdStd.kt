@@ -16,7 +16,6 @@ import com.bumptech.glide.request.target.SimpleTarget
 import com.bumptech.glide.request.transition.Transition
 import com.imcys.bilibilias.base.utils.asToast
 import com.imcys.bilibilias.common.R
-import com.microsoft.appcenter.analytics.Analytics
 import master.flame.danmaku.controller.IDanmakuView
 import java.io.File
 import java.io.FileNotFoundException
@@ -62,17 +61,12 @@ open class AsJzvdStd : JzvdStd {
 
     @SuppressLint("Recycle")
     constructor(context: Context, attrs: AttributeSet?) : super(context, attrs) {
-
         val typedArray = context.obtainStyledAttributes(attrs, R.styleable.AsJzvdStd)
         val showPlayType = typedArray.getBoolean(R.styleable.AsJzvdStd_showPlayButton, true)
         if (!showPlayType) startLinearLayout.visibility = View.INVISIBLE
         asJzvdstdPicDlBt.setOnClickListener {
             downloadPic()
-            //通知下载成功
-            Analytics.trackEvent("下载封面")
         }
-
-
     }
 
 

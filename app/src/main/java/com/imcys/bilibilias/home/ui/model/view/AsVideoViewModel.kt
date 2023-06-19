@@ -2,7 +2,6 @@ package com.imcys.bilibilias.home.ui.model.view
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.app.Application
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -10,28 +9,19 @@ import android.content.Context.CLIPBOARD_SERVICE
 import android.os.Build
 import android.view.View
 import android.widget.Toast
-import androidx.lifecycle.AndroidViewModel
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.preference.PreferenceManager
 import com.imcys.asbottomdialog.bottomdialog.AsDialog
-import com.imcys.bilibilias.R
-import com.imcys.bilibilias.common.base.api.BilibiliApi
-import com.imcys.bilibilias.base.app.App
 import com.imcys.bilibilias.base.model.user.LikeVideoBean
-import com.imcys.bilibilias.base.model.user.UserInfoBean
 import com.imcys.bilibilias.base.utils.DialogUtils
 import com.imcys.bilibilias.base.utils.asToast
-import com.imcys.bilibilias.common.base.AbsActivity
-import com.imcys.bilibilias.common.base.app.BaseApplication
+import com.imcys.bilibilias.common.base.api.BilibiliApi
 import com.imcys.bilibilias.common.base.utils.file.FileUtils
+import com.imcys.bilibilias.common.base.utils.http.HttpUtils
+import com.imcys.bilibilias.common.base.utils.http.KtHttpUtils
 import com.imcys.bilibilias.databinding.ActivityAsVideoBinding
 import com.imcys.bilibilias.home.ui.activity.AsVideoActivity
 import com.imcys.bilibilias.home.ui.model.*
-import com.imcys.bilibilias.common.base.utils.http.HttpUtils
-import com.imcys.bilibilias.common.base.utils.http.KtHttpUtils
-import com.imcys.bilibilias.home.ui.activity.HomeActivity
-import com.microsoft.appcenter.analytics.Analytics
 import kotlinx.coroutines.*
 import okio.BufferedSink
 import okio.buffer
@@ -187,7 +177,6 @@ class AsVideoViewModel(
         CoroutineScope(Dispatchers.Default).launch {
             asToast(context, "下载弹幕储存于\n${savePath}/${cid}_danmu.xml")
             //通知下载成功
-            Analytics.trackEvent("下载弹幕")
         }
 
     }
@@ -362,10 +351,7 @@ class AsVideoViewModel(
      * @param addMediaIds String
      */
     private fun addCollection(addMediaIds: String, avid: Int) {
-
-
         CoroutineScope(Dispatchers.Default).launch {
-
             val collectionResultBean =
                 KtHttpUtils.addHeader("cookie", (context as AsVideoActivity).asUser.cookie)
                     .addParam("rid", avid.toString())
@@ -380,9 +366,7 @@ class AsVideoViewModel(
             } else {
                 asToast(context, "收藏失败${collectionResultBean.code}")
             }
-
         }
-
 
     }
 

@@ -346,7 +346,6 @@ class AsLoginBsViewModel(
                 //登陆成功
                 if (code == 0) {
                     (context as HomeActivity).homeFragment.initUserData()
-                    context.homeFragment.startStatistics()
                     //提交云端资料
                     postCloudCookie(context)
                 } else {

@@ -14,8 +14,6 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import androidx.preference.PreferenceManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.baidu.mobstat.StatService
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.hyy.highlightpro.HighlightPro
 import com.hyy.highlightpro.parameter.Constraints
@@ -41,16 +39,12 @@ import com.imcys.bilibilias.common.base.utils.http.KtHttpUtils
 import com.imcys.bilibilias.databinding.FragmentHomeBinding
 import com.imcys.bilibilias.databinding.TipAppBinding
 import com.imcys.bilibilias.home.ui.activity.HomeActivity
-import com.imcys.bilibilias.home.ui.adapter.OldHomeAdAdapter
 import com.imcys.bilibilias.home.ui.adapter.OldHomeBeanAdapter
 import com.imcys.bilibilias.base.utils.TokenUtils.getParamStr
 import com.imcys.bilibilias.common.base.app.BaseApplication.Companion.myUserData
-import com.imcys.bilibilias.home.ui.model.OldHomeAdBean
 import com.imcys.bilibilias.home.ui.model.OldHomeBannerDataBean
 import com.imcys.bilibilias.home.ui.model.OldUpdateDataBean
 import com.imcys.bilibilias.home.ui.model.view.FragmentHomeViewModel
-import com.microsoft.appcenter.AppCenter
-import com.microsoft.appcenter.distribute.Distribute
 import com.xiaojinzi.component.anno.RouterAnno
 import com.youth.banner.indicator.CircleIndicator
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
@@ -81,12 +75,6 @@ class HomeFragment : Fragment() {
     private val bottomSheetDialog by lazy {
         DialogUtils.loadDialog(requireContext())
     }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -121,7 +109,6 @@ class HomeFragment : Fragment() {
         if (guideVersion != App.AppGuideVersion) {
             loadHomeGuide()
         }
-        StatService.onPageStart(context, "HomeFragment")
     }
 
 
@@ -162,49 +149,7 @@ class HomeFragment : Fragment() {
     private fun loadServiceData() {
         loadAppData()
         loadBannerData()
-        initHomeAd()
     }
-
-    /**
-     * 加载首页广告
-     */
-    private fun initHomeAd() {
-
-        val userGoogleADSwitch =
-            PreferenceManager.getDefaultSharedPreferences(requireContext())
-                .getBoolean("user_google_ad_switch", true)
-
-        if (userGoogleADSwitch) {
-            lifecycleScope.launch(Dispatchers.IO) {
-                val oldHomeAdBean = getOldHomeAdBean()
-                //切换主线程
-                launch(Dispatchers.Main) {
-                    val adapter = OldHomeAdAdapter()
-                    fragmentHomeBinding.fragmentHomeAdRv.adapter = adapter
-                    fragmentHomeBinding.fragmentHomeAdRv.layoutManager =
-                        LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false)
-
-                    adapter.submitList(oldHomeAdBean.data)
-                }
-
-
-            }
-        }
-
-
-    }
-
-    /**
-     * 获取广告请求
-     * @return OldHomeAdBean
-     */
-    private suspend fun getOldHomeAdBean(): OldHomeAdBean {
-        return HttpUtils.asyncGet(
-            "${BiliBiliAsApi.appFunction}?type=oldHomeAd",
-            OldHomeAdBean::class.java
-        )
-    }
-
 
     /**
      * 加载轮播图信息
@@ -232,8 +177,6 @@ class HomeFragment : Fragment() {
      * 加载APP数据
      */
     private fun loadAppData() {
-        AppCenter.start((context as Activity).application, App.appSecret, Distribute::class.java)
-
         lifecycleScope.launch {
 
             val oldUpdateDataBean =
@@ -378,27 +321,12 @@ class HomeFragment : Fragment() {
                 //登陆成功
                 if (code == 0) {
                     initUserData()
-                    startStatistics()
                 }
             }.apply {
                 show()
             }
 
         }
-    }
-
-    /**
-     * 启动统计
-     */
-    internal fun startStatistics() {
-
-        val sharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        sharedPreferences.edit()
-            .putBoolean("microsoft_app_center_type", true)
-            .putBoolean("baidu_statistics_type", true)
-            .apply()
-
-
     }
 
     //初始化用户数据
@@ -564,10 +492,5 @@ class HomeFragment : Fragment() {
         }
 
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        StatService.onPageEnd(context, "HomeFragment")
     }
 }

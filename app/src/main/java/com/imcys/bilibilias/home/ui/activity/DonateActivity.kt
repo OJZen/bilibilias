@@ -4,31 +4,28 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
 import com.imcys.bilibilias.common.base.api.BiliBiliAsApi
 import com.imcys.bilibilias.databinding.ActivityDonateBinding
 import com.imcys.bilibilias.home.ui.adapter.DonateItemAdapter
 import com.imcys.bilibilias.home.ui.model.DonateViewBean
-import com.imcys.bilibilias.home.ui.model.OldDonateBean
 import com.imcys.bilibilias.home.ui.model.TipBean
 import com.imcys.bilibilias.common.base.utils.http.HttpUtils
+import com.imcys.bilibilias.home.ui.model.OldDonateBean
 import com.zackratos.ultimatebarx.ultimatebarx.addStatusBarTopPadding
 
 class DonateActivity : BaseActivity() {
     private val donateMutableList = mutableListOf<DonateViewBean>()
     lateinit var binding: ActivityDonateBinding
-    lateinit var donateAdapter: DonateItemAdapter
+    private lateinit var donateAdapter: DonateItemAdapter
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_donate)
         initView()
     }
 
-
     private fun initView() {
-
         binding.apply {
             donateTopLy.addStatusBarTopPadding()
         }
@@ -37,14 +34,12 @@ class DonateActivity : BaseActivity() {
     }
 
     private fun initRv() {
-
         donateAdapter = DonateItemAdapter()
         binding.apply {
             donateRv.adapter = donateAdapter
             donateRv.layoutManager =
                 LinearLayoutManager(this@DonateActivity, LinearLayoutManager.VERTICAL, false)
         }
-
 
     }
 
@@ -74,21 +69,8 @@ class DonateActivity : BaseActivity() {
                     )
                 )
             )
-
             donateAdapter.submitList(donateMutableList +  newMutableList)
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
     }
 
     companion object {

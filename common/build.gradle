@@ -128,18 +128,8 @@ dependencies {
     api 'com.github.xiaojinzi123.KComponent:kcomponent-rx:1.0.0-rc4'
     ksp "com.github.xiaojinzi123.KComponent:kcomponent-compiler:1.0.0-rc4"
 
-    //百度统计
-    api 'com.baidu.mobstat:mtj-sdk-circle:4.0.7.5'
-
     //开屏引导
     api 'com.github.hyy920109:GuidePro:1.1.0'
-
-    //微软分发
-    def appCenterSdkVersion = '5.0.0'
-    api "com.microsoft.appcenter:appcenter-distribute:${appCenterSdkVersion}"
-    //微软统计
-    api "com.microsoft.appcenter:appcenter-analytics:${appCenterSdkVersion}"
-    api "com.microsoft.appcenter:appcenter-crashes:${appCenterSdkVersion}"
 
     //api "com.github.fondesa:recycler-view-divider:3.6.0" rv分割
 

@@ -1,10 +1,8 @@
 package com.imcys.bilibilias.home.ui.activity
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.baidu.mobstat.StatService
 import com.imcys.bilibilias.R
 import com.imcys.bilibilias.base.BaseActivity
 import com.imcys.bilibilias.databinding.ActivityDedicateBinding
@@ -113,16 +111,5 @@ class DedicateActivity : BaseActivity() {
                 LinearLayoutManager(this@DedicateActivity, LinearLayoutManager.VERTICAL, false)
             adapter.submitList(dedicateMutableList)
         }
-    }
-
-
-    override fun onResume() {
-        super.onResume()
-        StatService.onResume(this)
-    }
-
-    override fun onPause() {
-        super.onPause()
-        StatService.onPause(this)
     }
 }
